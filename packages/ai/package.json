@@ -1,6 +1,6 @@
 {
 	"name": "@trysquare/ai",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "AI assistant context for trysquare — writes tool-specific context files for Claude Code, Cursor, Copilot, Windsurf, Codex, and others",
 	"main": "index.js",
 	"bin": {

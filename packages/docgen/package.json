@@ -1,6 +1,6 @@
 {
 	"name": "@trysquare/docgen",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "API documentation generator for trysquare — produces Doxygen-style reference from verified test chains",
 	"main": "index.js",
 	"files": [
