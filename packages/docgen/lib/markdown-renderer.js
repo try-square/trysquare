@@ -31,8 +31,9 @@ function renderMarkdown(docs) {
 				lines.push('**Parameters**');
 				for (const input of scenario.inputs) {
 					const typePart = input.type ? ` \`${input.type}\`` : '';
+					const valuePart = ` \`${formatValue(input.value)}\``;
 					const descPart = input.description ? ` — ${input.description}` : '';
-					lines.push(`- \`${input.name}\`${typePart}${descPart}: \`${formatValue(input.value)}\``);
+					lines.push(`- \`${input.name}\`${typePart}${valuePart}${descPart}`);
 				}
 			}
 

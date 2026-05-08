@@ -211,6 +211,64 @@ module.exports = {
 
 `npm test` now produces both test output and an `index.html` API reference in `./docs`. The two are independent — CI reads the test output, developers consult the docs.
 
+Example generated API reference (markdown format):
+
+```markdown
+# formatCurrency
+
+Formats a numeric amount as a localized currency string.
+
+## whole dollar amount
+
+**Parameters**
+- `whole dollar amount` `number` `1000` — Rounds to 2 decimal places.
+
+**Returns**
+- `string` equals "$1,000.00"
+
+## amount with cents
+
+**Returns**
+- `string` equals "$10.50"
+
+---
+
+# login
+
+Authenticates a user and returns a session token.
+
+## valid credentials
+
+### success
+
+**Returns**
+- `object` equals {"token":"abc123"}
+
+### network error
+
+**Returns**
+- `object` equals {"error":"network unavailable"}
+
+---
+
+# createUser
+
+Creates a user record and sends a welcome email.
+
+## new user (mailer)
+
+**Parameters**
+- `new user` `UserInput` `{"email":"alice@example.com"}` — Must have a valid email address.
+
+**Returns**
+- `object` equals {"created":true}
+
+**Side effects**
+- send welcome email was called with [{"to":"alice@example.com","subject":"Welcome"}]
+```
+
+Every line in that output is derived from a passing assertion. Nothing is written by hand.
+
 Install `@trysquare/reporters` for markdown, HTML, PDF, and JUnit test output reporters.
 
 ## Packages
