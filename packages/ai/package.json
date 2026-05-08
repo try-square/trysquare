@@ -1,0 +1,33 @@
+{
+	"name": "@trysquare/ai",
+	"version": "0.1.0",
+	"description": "AI assistant context for trysquare — writes tool-specific context files for Claude Code, Cursor, Copilot, Windsurf, Codex, and others",
+	"main": "index.js",
+	"bin": {
+		"trysquare-ai": "./bin/init.js"
+	},
+	"files": [
+		"index.js",
+		"context.md",
+		"bin/**"
+	],
+	"scripts": {
+		"test": "echo \"no tests for @trysquare/ai — context.md is the artifact\""
+	},
+	"keywords": [
+		"testing",
+		"ai",
+		"claude",
+		"cursor",
+		"copilot",
+		"windsurf",
+		"codex",
+		"context",
+		"llm"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	}
+}
