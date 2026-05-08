@@ -1,0 +1,34 @@
+{
+	"name": "@trysquare/docgen",
+	"version": "0.1.0",
+	"description": "API documentation generator for trysquare — produces Doxygen-style reference from verified test chains",
+	"main": "index.js",
+	"files": [
+		"index.js",
+		"lib/**/*.js",
+		"!lib/**/*.test.js"
+	],
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"keywords": [
+		"testing",
+		"documentation",
+		"api-docs",
+		"docgen"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"@trysquare/core": "^0.1.0"
+	},
+	"devDependencies": {
+		"@trysquare/core": "*"
+	},
+	"optionalDependencies": {
+		"typescript": ">=4.0.0"
+	}
+}

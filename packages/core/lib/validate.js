@@ -10,7 +10,8 @@ function deriveName(component) {
 	return null;
 }
 
-function requireComponentName(component, label) {
+function requireComponentName(component, meta) {
+	const label = typeof meta === 'string' ? meta : (meta && typeof meta === 'object' ? meta.label : null);
 	if (label) {
 		if (typeof label !== 'string' || !label) {
 			throw new Error('when() label must be a non-empty string.');
@@ -21,10 +22,17 @@ function requireComponentName(component, label) {
 	if (!name) {
 		throw new Error(
 			'when() requires a named function, class, or object with a name property. ' +
-			"For arrow functions or ambiguous cases, use when(fn, 'Label')."
+			"For arrow functions or ambiguous cases, use when(fn, 'Label') or when(fn, { label: 'Label' })."
 		);
 	}
 	return name;
+}
+
+function extractComponentDescription(meta) {
+	if (meta && typeof meta === 'object' && typeof meta.description === 'string' && meta.description) {
+		return meta.description;
+	}
+	return null;
 }
 
 function requireInputName(inputs, method) {
@@ -75,6 +83,7 @@ function requireLifecycleName(lifecycleState) {
 module.exports = {
 	deriveName,
 	requireComponentName,
+	extractComponentDescription,
 	requireInputName,
 	requireStubName,
 	requireActionName,

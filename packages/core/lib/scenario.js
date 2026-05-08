@@ -3,6 +3,7 @@
 const { nextId } = require('./id');
 const {
 	requireComponentName,
+	extractComponentDescription,
 	requireInputName,
 	requireStubName,
 	requireActionName,
@@ -126,6 +127,7 @@ function makeWhen(targetRunner) {
 		const opts = options || {};
 		const testObj = {
 			component: state.componentName,
+			componentDescription: state.componentDescription || null,
 			componentFn: state.componentFn,
 			lifecycleState: state.lifecycleState,
 			inputs: state.inputs,
@@ -155,11 +157,13 @@ function makeWhen(targetRunner) {
 		return testObj;
 	}
 
-	function when(component, label) {
-		const componentName = requireComponentName(component, label);
+	function when(component, meta) {
+		const componentName = requireComponentName(component, meta);
+		const componentDescription = extractComponentDescription(meta);
 		const state = {
 			componentFn: component,
 			componentName,
+			componentDescription,
 			baseId: null,
 			focused: false,
 			ignored: false,
