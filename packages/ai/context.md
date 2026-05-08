@@ -130,6 +130,43 @@ wasNotCalled(mySpy)          // name: 'my spy was not called'
 
 ---
 
+## API documentation annotations (optional)
+
+These fields feed `@trysquare/docgen` to generate API reference documentation.
+They are ignored at test runtime — tests pass or fail the same way without them.
+
+```js
+// when() accepts an optional description for the component
+when(createUser, { description: 'Creates a user and sends a welcome email.' })
+
+// Input objects accept optional type and description fields
+const newUser = {
+    name:        'new user',
+    value:       { email: 'alice@example.com' },
+    type:        'UserInput',                          // named type for the parameter
+    description: 'Must have a valid email address.',   // shown in parameter table
+};
+```
+
+Wire the doc generator into `test.config.js`:
+
+```js
+const { DocumentGenerator } = require('@trysquare/docgen');
+
+module.exports = {
+    reporters: [
+        ['console'],
+        new DocumentGenerator({
+            output: './docs',
+            format: 'html',    // 'html' | 'markdown' | 'both'
+            types:  'infer',   // 'infer' | 'explicit' | 'typescript'
+        }),
+    ],
+};
+```
+
+---
+
 ## Naming requirements — every named entity must have a .name
 
 The library enforces this at registration time. It throws — not warns.

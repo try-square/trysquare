@@ -158,22 +158,60 @@ Generated output:
 - ✓ send welcome email was called with [{ to: "alice@example.com", subject: "Welcome" }]
 ```
 
-## Configuration
+## API documentation
+
+`@trysquare/docgen` generates API reference documentation from the same test chains — Doxygen-style output that a developer consulting the docs can actually use, not a pass/fail test report.
+
+Add optional annotations to the chain:
+
+```js
+const { when } = require('@trysquare/core');
+const { equals, spy, wasCalledWith } = require('@trysquare/matchers');
+const { createUser } = require('./users');
+
+const send   = spy('send welcome email');
+const mailer = { name: 'mailer', send };
+
+const newUser = {
+    name:        'new user',
+    value:       { email: 'alice@example.com' },
+    type:        'UserInput',                           // optional — type annotation
+    description: 'Must have a valid email address.',    // optional — parameter description
+};
+
+when(createUser, { description: 'Creates a user and sends a welcome email.' })
+    .hasInputs(newUser)
+    .stubs(mailer)
+    .expect
+    .output(equals({ created: true }))
+    .sideEffects(wasCalledWith(send, [{ to: 'alice@example.com', subject: 'Welcome' }]))
+    .assert();
+```
+
+Wire `DocumentGenerator` into `test.config.js` alongside your test reporters:
 
 ```js
 // test.config.js
+const { DocumentGenerator } = require('@trysquare/docgen');
+
 module.exports = {
     execution: 'parallel',
     timeout: 5000,
     reporters: [
-        ['markdown', { output: './docs/spec.md' }],
-        ['junit',    { output: './test-results/junit.xml' }],
         ['console'],
+        ['junit', { output: './test-results/junit.xml' }],
+        new DocumentGenerator({
+            output: './docs',
+            format: 'html',        // 'html' | 'markdown' | 'both'
+            types:  'infer',       // 'infer' | 'explicit' | 'typescript'
+        }),
     ],
 };
 ```
 
-Install `@trysquare/reporters` for markdown, HTML, PDF, and JUnit output.
+`npm test` now produces both test output and an `index.html` API reference in `./docs`. The two are independent — CI reads the test output, developers consult the docs.
+
+Install `@trysquare/reporters` for markdown, HTML, PDF, and JUnit test output reporters.
 
 ## Packages
 
@@ -181,7 +219,8 @@ Install `@trysquare/reporters` for markdown, HTML, PDF, and JUnit output.
 |---------|-------------|
 | [`@trysquare/core`](packages/core) | Foundation — runner, fluent chain, no framework dependencies |
 | [`@trysquare/matchers`](packages/matchers) | `equals`, `includes`, `wasCalled`, `wasCalledWith`, and more |
-| [`@trysquare/reporters`](packages/reporters) | Markdown, HTML, PDF, JUnit, and console reporters |
+| [`@trysquare/reporters`](packages/reporters) | Test output reporters — Markdown, HTML, PDF, JUnit, console |
+| [`@trysquare/docgen`](packages/docgen) | API documentation generator — produces verified reference docs from test chains |
 | [`@trysquare/react`](packages/react) | React lifecycle extensions |
 | [`@trysquare/angular`](packages/angular) | Angular DI + lifecycle extensions |
 | [`@trysquare/factories`](packages/factories) | Helpers for building named scenario inputs |
