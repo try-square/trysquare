@@ -1,0 +1,30 @@
+{
+	"name": "@trysquare/matchers",
+	"version": "0.1.0",
+	"description": "Named spec matchers for @trysquare/core",
+	"main": "index.js",
+	"files": [
+		"index.js",
+		"lib/**/*.js",
+		"!lib/**/*.test.js"
+	],
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"keywords": [
+		"testing",
+		"matchers",
+		"assertions"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"@trysquare/core": "^0.1.0"
+	},
+	"devDependencies": {
+		"@trysquare/core": "*"
+	}
+}

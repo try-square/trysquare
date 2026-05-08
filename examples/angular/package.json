@@ -1,0 +1,14 @@
+{
+	"name": "@trysquare/example-angular",
+	"version": "0.1.0",
+	"description": "Angular component example — trysquare/angular with fixtureFactory injection (no Angular compiler required)",
+	"private": true,
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"devDependencies": {
+		"@trysquare/core":     "*",
+		"@trysquare/angular":  "*",
+		"@trysquare/matchers": "*"
+	}
+}

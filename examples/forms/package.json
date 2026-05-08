@@ -1,0 +1,14 @@
+{
+	"name": "@trysquare/example-forms",
+	"version": "0.1.0",
+	"description": "Form validation example — trysquare testing without a test harness",
+	"private": true,
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"devDependencies": {
+		"@trysquare/core":      "*",
+		"@trysquare/matchers":  "*",
+		"@trysquare/factories": "*"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"name": "@trysquare/example-react",
+	"version": "0.1.0",
+	"description": "React component example — trysquare/react with jsdom and @testing-library/react",
+	"private": true,
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"devDependencies": {
+		"@trysquare/core":              "*",
+		"@trysquare/react":             "*",
+		"@trysquare/matchers":          "*",
+		"react":                        "^18",
+		"react-dom":                    "^18",
+		"@testing-library/react":       "^14",
+		"@testing-library/user-event":  "^14",
+		"jsdom":                        "^23",
+		"global-jsdom":                 "^9"
+	}
+}

@@ -1,0 +1,35 @@
+{
+	"name": "@trysquare/core",
+	"version": "0.1.0",
+	"description": "Structured testing library — the test chain is the specification",
+	"main": "index.js",
+	"exports": {
+		".": "./index.js"
+	},
+	"bin": {
+		"trysquare": "./bin/trysquare.js"
+	},
+	"files": [
+		"index.js",
+		"lib/**/*.js",
+		"!lib/**/*.test.js",
+		"!lib/**/*.bootstrap.js",
+		"bin/**"
+	],
+	"scripts": {
+		"test": "node --test lib/runner.bootstrap.js && node run-tests.js"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"keywords": [
+		"testing",
+		"test",
+		"documentation"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	}
+}

@@ -1,0 +1,17 @@
+node_modules/
+*.log
+.DS_Store
+
+# Test output
+coverage/
+dist/
+
+# Reporter output
+spec.md
+spec-docs/
+spec.pdf
+test-results/
+
+# Editor
+.vscode/
+.idea/

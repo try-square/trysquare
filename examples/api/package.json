@@ -1,0 +1,14 @@
+{
+	"name": "@trysquare/example-api",
+	"version": "0.1.0",
+	"description": "Async service layer example — trysquare testing without a test harness",
+	"private": true,
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"devDependencies": {
+		"@trysquare/core":      "*",
+		"@trysquare/matchers":  "*",
+		"@trysquare/factories": "*"
+	}
+}

@@ -1,0 +1,14 @@
+{
+	"name": "trysquare",
+	"private": true,
+	"workspaces": [
+		"packages/*",
+		"examples/*"
+	],
+	"scripts": {
+		"test": "npm run test --workspaces --if-present"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.31.0"
+	}
+}

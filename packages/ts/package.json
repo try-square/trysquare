@@ -1,0 +1,30 @@
+{
+	"name": "@trysquare/ts",
+	"version": "0.1.0",
+	"description": "TypeScript type definitions for @trysquare/core",
+	"types": "index.d.ts",
+	"files": [
+		"index.d.ts"
+	],
+	"scripts": {
+		"test": "tsc --noEmit"
+	},
+	"keywords": [
+		"typescript",
+		"types",
+		"testing"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"@trysquare/core": "^0.1.0",
+		"typescript": ">=4.7.0"
+	},
+	"devDependencies": {
+		"@trysquare/core": "*",
+		"typescript": "^5.0.0"
+	}
+}

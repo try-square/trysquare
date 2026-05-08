@@ -1,0 +1,47 @@
+{
+	"name": "@trysquare/react",
+	"version": "0.1.0",
+	"description": "React extensions for @trysquare/core — lifecycle states, mount wrapper, ReactRunner, user actions",
+	"main": "index.js",
+	"exports": {
+		".": "./index.js"
+	},
+	"files": [
+		"index.js",
+		"lib/**/*.js",
+		"!lib/**/*.test.js"
+	],
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"keywords": [
+		"testing",
+		"test",
+		"react",
+		"react-testing-library"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"@trysquare/core": "^0.1.0",
+		"@testing-library/react": ">=14",
+		"@testing-library/user-event": ">=14",
+		"react": ">=18",
+		"react-dom": ">=18"
+	},
+	"peerDependenciesMeta": {
+		"@testing-library/react": { "optional": true },
+		"@testing-library/user-event": { "optional": true },
+		"react": { "optional": false },
+		"react-dom": { "optional": false }
+	},
+	"devDependencies": {
+		"@trysquare/core": "*"
+	}
+}

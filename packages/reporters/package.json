@@ -1,0 +1,40 @@
+{
+	"name": "@trysquare/reporters",
+	"version": "0.1.0",
+	"description": "Reporter implementations for @trysquare/core — Markdown, HTML, PDF, JUnit, Console",
+	"main": "index.js",
+	"exports": {
+		".": "./index.js"
+	},
+	"files": [
+		"index.js",
+		"lib/**/*.js",
+		"!lib/**/*.test.js"
+	],
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"keywords": [
+		"testing",
+		"test",
+		"documentation",
+		"reporter"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"@trysquare/core": "^0.1.0"
+	},
+	"devDependencies": {
+		"@trysquare/core": "*"
+	},
+	"dependencies": {
+		"pdfkit": "^0.14.0"
+	}
+}

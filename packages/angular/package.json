@@ -1,0 +1,39 @@
+{
+	"name": "@trysquare/angular",
+	"version": "0.1.0",
+	"description": "Angular extensions for @trysquare/core — lifecycle states, TestBed integration, DI stub maps",
+	"main": "index.js",
+	"exports": {
+		".": "./index.js"
+	},
+	"files": [
+		"index.js",
+		"lib/**/*.js",
+		"!lib/**/*.test.js"
+	],
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"keywords": [
+		"testing",
+		"test",
+		"angular",
+		"testbed"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"@trysquare/core": "^0.1.0",
+		"@angular/core": ">=15.0.0",
+		"@angular/platform-browser": ">=15.0.0"
+	},
+	"devDependencies": {
+		"@trysquare/core": "*"
+	}
+}

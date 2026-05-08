@@ -1,0 +1,30 @@
+{
+	"name": "@trysquare/factories",
+	"version": "0.1.0",
+	"description": "Factory helpers for building named scenario inputs for @trysquare/core",
+	"main": "index.js",
+	"files": [
+		"index.js",
+		"lib/**/*.js",
+		"!lib/**/*.test.js"
+	],
+	"scripts": {
+		"test": "node run-tests.js"
+	},
+	"keywords": [
+		"testing",
+		"factories",
+		"test-data"
+	],
+	"author": "",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"peerDependencies": {
+		"@trysquare/core": "^0.1.0"
+	},
+	"devDependencies": {
+		"@trysquare/core": "*"
+	}
+}
