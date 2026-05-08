@@ -9,108 +9,200 @@ Named after the try square: a craftsman's tool for verifying work meets a known 
 In every major JavaScript test framework, test descriptions are arbitrary strings:
 
 ```js
-describe('formatDate', () => {
-    it('formats a timestamp correctly', () => { ... });
+describe('formatCurrency', () => {
+    it('formats whole dollar amounts', () => {
+        expect(formatCurrency(1000)).toBe('$1,000.00');
+    });
 });
 ```
 
-The string `'formats a timestamp correctly'` has no enforced relationship to what is actually being tested. Documentation generated from these tests reflects what a developer wrote, not a verified specification of behavior. Over time, descriptions and code drift apart.
+The string `'formats whole dollar amounts'` has no enforced relationship to what is actually being tested. Over time, descriptions and behavior drift apart. Documentation generated from tests reflects what someone wrote, not what the code does.
 
 ## The solution
 
 ```js
-when(formatDate).hasInputs(unixTimestamp).expect.output(formatsAsISO8601).assert();
+const { when } = require('@trysquare/core');
+const { equals } = require('@trysquare/matchers');
+const { formatCurrency } = require('./format');
+
+const wholeDollars = { name: 'whole dollar amount', value: 1000 };
+
+when(formatCurrency).hasInputs(wholeDollars).expect.output(equals('$1,000.00')).assert();
 ```
 
-The chain is structured data, not a string. The label in generated docs comes from `formatsAsISO8601.name` — the same function that verifies the behavior. They cannot drift because they are the same artifact.
+The input name and matcher name are the same objects that drive assertions. When this test runs with `MarkdownReporter`, it writes:
 
-## Quick start
+```markdown
+# formatCurrency
+
+## whole dollar amount
+
+**Output**
+- ✓ equals "$1,000.00"
+```
+
+There are no strings to maintain separately. The documentation is generated from the verified specification.
+
+## Installation
 
 ```bash
-npm install @trysquare/core
+npm install --save-dev @trysquare/core @trysquare/matchers
 ```
 
-```js
-// math.test.js
-const assert = require('node:assert');
-const { Runner, makeWhen } = require('@trysquare/core');
-const { double } = require('./math');
+Add to `package.json`:
 
-const runner = new Runner();
-const when = makeWhen(runner);
-
-const smallNumber = { name: 'small number', value: 4 };
-
-function doublesTheInput(result) {
-    assert.strictEqual(result, 8);
+```json
+{
+  "scripts": {
+    "test": "trysquare"
+  }
 }
-
-when(double).hasInputs(smallNumber).expect.output(doublesTheInput).assert();
-
-module.exports = runner;
 ```
 
-```js
-// run-tests.js
-const runner = require('./math.test');
+`trysquare` discovers all `*.test.js` files automatically. No runner setup, no test entry file.
 
-runner.run().then(suite => {
-    console.log(`${suite.passed} passed, ${suite.failed} failed`);
-    if (suite.failed > 0) process.exit(1);
-});
+## Writing tests
+
+```js
+// format.test.js
+const { when } = require('@trysquare/core');
+const { equals } = require('@trysquare/matchers');
+const { formatCurrency } = require('./format');
+
+const wholeDollars = { name: 'whole dollar amount', value: 1000   };
+const withCents    = { name: 'amount with cents',   value: 10.5   };
+const negative     = { name: 'negative amount',     value: -42.00 };
+
+when(formatCurrency).hasInputs(wholeDollars).expect.output(equals('$1,000.00')).assert();
+when(formatCurrency).hasInputs(withCents).expect.output(equals('$10.50')).assert();
+when(formatCurrency).hasInputs(negative).expect.output(equals('-$42.00')).assert();
 ```
 
 ```bash
-node run-tests.js
-# 1 passed, 0 failed
+npm test
+# 3 passed, 0 failed
 ```
 
 ## Branching
 
-`when()` returns an immutable builder. Multiple branches from the same base are grouped automatically in output — no `suite()` wrapper needed.
+`when()` returns an immutable builder. Multiple branches from the same base are grouped automatically in generated output — no wrapper needed.
 
 ```js
-const loginAttempt = when(LoginForm).hasInputs(validCredentials);
+const { when } = require('@trysquare/core');
+const { equals } = require('@trysquare/matchers');
+const { login } = require('./auth');
 
-loginAttempt.stubs(happyPath).expect.output(authenticatesUser).assert();
-loginAttempt.stubs(networkError).expect.output(showsErrorMessage).assert();
-loginAttempt.stubs(badPassword).expect.output(showsPasswordError).assert();
+const validCredentials = { name: 'valid credentials', value: { user: 'alice', pass: 'secret' } };
+
+const loginAttempt = when(login).hasInputs(validCredentials);
+
+loginAttempt.stubs(successStubs).expect.output(equals({ token: 'abc123' })).assert();
+loginAttempt.stubs(networkErrorStubs).expect.output(equals({ error: 'network unavailable' })).assert();
+loginAttempt.stubs(badPasswordStubs).expect.output(equals({ error: 'invalid credentials' })).assert();
 ```
+
+Generated output:
+
+```markdown
+# login
+
+## valid credentials
+
+### success
+
+**Output**
+- ✓ equals { token: "abc123" }
+
+### network error
+
+**Output**
+- ✓ equals { error: "network unavailable" }
+
+### bad password
+
+**Output**
+- ✓ equals { error: "invalid credentials" }
+```
+
+## Side effects
+
+```js
+const { when } = require('@trysquare/core');
+const { equals, spy, wasCalledWith } = require('@trysquare/matchers');
+const { createUser } = require('./users');
+
+const send      = spy('send welcome email');
+const mailer    = { name: 'mailer', send };
+const newUser   = { name: 'new user', value: { email: 'alice@example.com' } };
+
+when(createUser)
+    .hasInputs(newUser)
+    .stubs(mailer)
+    .expect
+    .output(equals({ created: true }))
+    .sideEffects(wasCalledWith(send, [{ to: 'alice@example.com', subject: 'Welcome' }]))
+    .assert();
+```
+
+Generated output:
+
+```markdown
+# createUser
+
+## new user (mailer)
+
+**Output**
+- ✓ equals { created: true }
+
+**Side effects**
+- ✓ send welcome email was called with [{ to: "alice@example.com", subject: "Welcome" }]
+```
+
+## Configuration
+
+```js
+// test.config.js
+module.exports = {
+    execution: 'parallel',
+    timeout: 5000,
+    reporters: [
+        ['markdown', { output: './docs/spec.md' }],
+        ['junit',    { output: './test-results/junit.xml' }],
+        ['console'],
+    ],
+};
+```
+
+Install `@trysquare/reporters` for markdown, HTML, PDF, and JUnit output.
 
 ## Packages
 
 | Package | Description |
 |---------|-------------|
 | [`@trysquare/core`](packages/core) | Foundation — runner, fluent chain, no framework dependencies |
+| [`@trysquare/matchers`](packages/matchers) | `equals`, `includes`, `wasCalled`, `wasCalledWith`, and more |
+| [`@trysquare/reporters`](packages/reporters) | Markdown, HTML, PDF, JUnit, and console reporters |
 | [`@trysquare/react`](packages/react) | React lifecycle extensions |
 | [`@trysquare/angular`](packages/angular) | Angular DI + lifecycle extensions |
-| [`@trysquare/reporters`](packages/reporters) | Markdown, HTML, PDF, JUnit, and console reporters |
 | [`@trysquare/factories`](packages/factories) | Helpers for building named scenario inputs |
-| [`@trysquare/matchers`](packages/matchers) | Named spec matchers |
 | [`@trysquare/ts`](packages/ts) | TypeScript type definitions |
 | [`@trysquare/ai`](packages/ai) | AI assistant context for Claude Code, Cursor, Copilot, Windsurf, and others |
 
 ## AI assistant support
 
-If you use an AI coding assistant, run this once in your project after installing trysquare:
+Most AI coding assistants will default to writing `describe`/`it` blocks that don't exist in trysquare. Run this once after installing:
 
 ```bash
 npx @trysquare/ai init
 ```
 
-This writes trysquare API context to your tool's config file (auto-detected). Supports Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex. Without it, most AI tools will default to writing `describe`/`it` blocks that don't belong here.
+Writes trysquare API context to your tool's config file — auto-detects Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ## Development
 
 ```bash
-# Install all workspace dependencies
-npm install
-
-# Run tests across all packages
-npm test
-
-# Run tests for a single package
-cd packages/core && npm test
+npm install       # install all workspace dependencies
+npm test          # run tests across all packages
 ```
 
 Releases are managed with [Changesets](https://github.com/changesets/changesets).
