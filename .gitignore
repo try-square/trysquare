@@ -12,6 +12,9 @@ spec-docs/
 spec.pdf
 test-results/
 
+# Claude Code local settings
+.claude/
+
 # Editor
 .vscode/
 .idea/
