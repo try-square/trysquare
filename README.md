@@ -45,8 +45,33 @@ There are no strings to maintain separately. The documentation is generated from
 
 ## Installation
 
+Install what your project needs — you don't need everything at once.
+
+**Every project:**
 ```bash
 npm install --save-dev @trysquare/core @trysquare/matchers
+```
+
+**Framework integrations (pick one):**
+```bash
+npm install --save-dev @trysquare/react
+npm install --save-dev @trysquare/angular
+```
+
+**Documentation output:**
+```bash
+npm install --save-dev @trysquare/reporters   # test reports — JUnit, Markdown, HTML, PDF
+npm install --save-dev @trysquare/docgen      # API reference docs
+```
+
+**TypeScript types:**
+```bash
+npm install --save-dev @trysquare/ts
+```
+
+**AI assistant context (no install required):**
+```bash
+npx @trysquare/ai init
 ```
 
 Add to `package.json`:
